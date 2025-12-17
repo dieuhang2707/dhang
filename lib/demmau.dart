@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class DemMau extends StatefulWidget {
-  DemMau({super.key});
+  const DemMau({super.key});
 
   @override
   State<DemMau> createState() => _DemMauState();

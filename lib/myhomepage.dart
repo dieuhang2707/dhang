@@ -18,7 +18,7 @@ class MyHomePage extends StatelessWidget {
         ),
 
         Icon(Icons.emoji_food_beverage_outlined, size: 100, color: Colors.red),
-        Text("Tôi là đương kim Trương Đình Quốc Trung Mr.B Kim Longggg", 
+        Text("Tôi là đương kim Trương Đình Quốc Trung Mr.Beer Kim Longggg", 
         style: TextStyle(fontSize: 30, color: Colors.blue)),
       ],
     );
