@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 // QUAN TRỌNG: Hãy đảm bảo bạn import đúng file chứa class AppDrawer
-import 'tonghopgiuaky.dart';
+
 
 class MyAccount extends StatelessWidget {
   const MyAccount({super.key});
@@ -97,7 +97,6 @@ class _ManHinhDangNhapState extends State<ManHinhDangNhap> {
       ),
 
       // THÊM DRAWER VÀO ĐÂY
-      drawer: const AppDrawer(),
 
       body: Form(
         key: khoa_form,
@@ -214,9 +213,6 @@ class _ManHinhProfileState extends State<ManHinhProfile> {
           IconButton(onPressed: xuLyDangXuat, icon: const Icon(Icons.logout)),
         ],
       ),
-
-      // THÊM DRAWER VÀO CẢ TRANG PROFILE
-      drawer: const AppDrawer(),
 
       backgroundColor: Colors.grey[100],
       body: FutureBuilder<Map<String, dynamic>>(

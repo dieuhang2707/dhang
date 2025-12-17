@@ -21,7 +21,7 @@ class TongHopGiuaKy extends StatefulWidget {
 }
 
 class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
-  int selectedIndex = -1;
+  int selectedIndex = -1; // -1 = Trang chủ
 
   final List<Widget> pages = const [
     MyHomePage(),
@@ -43,65 +43,49 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  title: const Text('TỔNG HỢP GIỮA KỲ'),
-  centerTitle: true,
-  leading: selectedIndex != -1
-      ? IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            setState(() {
-              selectedIndex = -1; // quay về trang chủ
-            });
-          },
-        )
-      : null,
-),
+        title: const Text('TỔNG HỢP GIỮA KỲ'),
+        centerTitle: true,
+      ),
 
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-  decoration: const BoxDecoration(
-    color: Colors.blue,
-  ),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Row(
-        children: const [
-          Icon(
-            Icons.menu_book,
-            color: Colors.white,
-            size: 40,
-          ),
-          SizedBox(width: 10),
-          Text(
-            'MENU BÀI TẬP',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+              decoration: const BoxDecoration(color: Colors.blue),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Row(
+                    children: [
+                      Icon(Icons.menu_book,
+                          color: Colors.white, size: 36),
+                      SizedBox(width: 10),
+                      Text(
+                        'MENU BÀI TẬP',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Nhóm 3',
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 6),
-      const Text(
-        'Nhóm 3',
-        style: TextStyle(
-          color: Colors.white70,
-          fontSize: 24,
-        ),
-      ),
-    ],
-  ),
-),
 
+            // ===== TRANG CHỦ =====
+            drawerItem(-1, Icons.home, 'Trang chủ'),
+            const Divider(),
 
-
-            drawerItem(0, Icons.home, 'Bài 1: MyHomePage'),
+            drawerItem(0, Icons.home_work, 'Bài 1: MyHomePage'),
             drawerItem(1, Icons.place, 'Bài 2: MyPlace'),
             drawerItem(2, Icons.book, 'Bài 3: MyHomeWork'),
             drawerItem(3, Icons.person, 'Bài 4: MyName'),
@@ -119,12 +103,7 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
       ),
 
       body: selectedIndex == -1
-          ? const Center(
-              child: Text(
-                'Lập trình ứng dụng thiết bị di động',
-                style: TextStyle(fontSize: 18),
-              ),
-            )
+          ? const TrangChu()
           : pages[selectedIndex],
     );
   }
@@ -137,8 +116,113 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
         setState(() {
           selectedIndex = index;
         });
-        Navigator.pop(context); // đóng drawer
+        Navigator.pop(context);
       },
+    );
+  }
+}
+
+/* ================= TRANG CHỦ ================= */
+
+class TrangChu extends StatelessWidget {
+  const TrangChu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blue,
+              child: Icon(Icons.school, size: 60, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+
+            const Text(
+              'LẬP TRÌNH ỨNG DỤNG\nTHIẾT BỊ DI ĐỘNG',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 30,
+                ),
+                child: Column(
+                  children: const [
+                    InfoRow(
+                      icon: Icons.person,
+                      label: 'Họ tên',
+                      value: 'Nguyễn Diệu Hằng',
+                    ),
+                    SizedBox(height: 10),
+                    InfoRow(
+                      icon: Icons.badge,
+                      label: 'Mã sinh viên',
+                      value: '22T1020599',
+                    ),
+                    SizedBox(height: 10),
+                    InfoRow(
+                      icon: Icons.group,
+                      label: 'Nhóm',
+                      value: 'Nhóm 3',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/* ================= INFO ROW ================= */
+
+class InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const InfoRow({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.blue),
+        const SizedBox(width: 10),
+        Text(
+          '$label:',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(value, style: const TextStyle(fontSize: 16)),
+        ),
+      ],
     );
   }
 }
