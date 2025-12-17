@@ -102,8 +102,9 @@ class _MyWeightState extends State<MyWeight> {
             double w = double.parse(weightCtrl.text);
             setState(() {
               bmi = w / (h * h);
-              if (bmi! < 18.5) status = "Thiếu cân";
-              else if (bmi! < 25) status = "Bình thường";
+              if (bmi! < 18.5) {
+                status = "Thiếu cân";
+              } else if (bmi! < 25) status = "Bình thường";
               else if (bmi! < 30) status = "Thừa cân";
               else status = "Béo phì";
             });

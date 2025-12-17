@@ -91,7 +91,7 @@ class _MyProductState extends State<MyProduct> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                (p.price ?? 0).toString() + "\$",
+                "${p.price ?? 0}\$",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class _MyProductState extends State<MyProduct> {
               ),
               SizedBox(width: 20),
               Text(
-                "Đã bán " + (p.rating.count ?? 0).toString() + "k+",
+                "Đã bán ${p.rating.count ?? 0}k+",
 style: TextStyle(fontSize: 11, color: Colors.grey[600]),
               ),
             ],
