@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'tonghopgiuaky.dart';
 
-// QUAN TRỌNG: Hãy đảm bảo bạn import đúng file chứa class AppDrawer
+
 
 
 class MyAccount extends StatelessWidget {
@@ -10,7 +11,6 @@ class MyAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Không bọc MaterialApp ở đây nữa vì nó đã được bọc ở main.dart
     return const ManHinhDangNhap();
   }
 }
@@ -197,7 +197,7 @@ class _ManHinhProfileState extends State<ManHinhProfile> {
   void xuLyDangXuat() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const MyAccount()),
+      MaterialPageRoute(builder: (context) => const TongHopGiuaKy()),
       (route) => false,
     );
   }

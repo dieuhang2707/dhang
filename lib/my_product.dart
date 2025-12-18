@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nhom3/api.dart';
 import 'package:flutter_nhom3/model/product.dart';
+import 'cart_page.dart';
 
 class MyProduct extends StatefulWidget {
   const MyProduct({super.key});
@@ -10,12 +11,12 @@ class MyProduct extends StatefulWidget {
 }
 
 class _MyProductState extends State<MyProduct> {
-  // ====== THÊM MỚI ======
+  // ====== GIỎ HÀNG + TÌM KIẾM ======
   List<Product> _list = [];
   List<Product> _listSearch = [];
   List<Product> cart = [];
   TextEditingController _searchController = TextEditingController();
-  // =====================
+  // ===============================
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +28,12 @@ class _MyProductState extends State<MyProduct> {
         elevation: 0,
       ),
       backgroundColor: Colors.grey[200],
-      body: FutureBuilder(
+      body: FutureBuilder<List<Product>>(
         future: Test_api.getAllProducts(),
-        builder: (context, red) {
-          if (red.connectionState == ConnectionState.done) {
-            if (_list.isEmpty) {
-              _list = red.data!;
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (_list.isEmpty && snapshot.hasData) {
+              _list = snapshot.data!;
               _listSearch = _list;
             }
             return myListProduct(_listSearch);
@@ -104,8 +105,10 @@ class _MyProductState extends State<MyProduct> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.add_shopping_cart,
-                    color: Colors.deepOrange),
+                icon: const Icon(
+                  Icons.add_shopping_cart,
+                  color: Colors.deepOrange,
+                ),
                 onPressed: () {
                   setState(() {
                     cart.add(p);
@@ -122,6 +125,7 @@ class _MyProductState extends State<MyProduct> {
     );
   }
 
+  // ================= TAB BAR =================
   Widget tabBar() {
     return Row(
       children: [
@@ -162,35 +166,54 @@ class _MyProductState extends State<MyProduct> {
           ),
         ),
         const SizedBox(width: 15),
-        Stack(
-          children: [
-            const Icon(Icons.shopping_cart_outlined,
-                color: Colors.white, size: 26),
-            if (cart.isNotEmpty)
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    cart.length.toString(),
-                    style: const TextStyle(
-                        color: Colors.white, fontSize: 10),
+
+        // ===== ICON GIỎ HÀNG =====
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CartPage(cart: cart),
+              ),
+            );
+          },
+          child: Stack(
+            children: [
+              const Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.white,
+                size: 26,
+              ),
+              if (cart.isNotEmpty)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      cart.length.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
+
         const SizedBox(width: 15),
         const Icon(Icons.chat_outlined, color: Colors.white, size: 26),
       ],
     );
   }
 
+  // ================= ĐÁNH GIÁ =================
   Widget danhGia(Product p) {
     return Row(
       children: [
@@ -210,8 +233,10 @@ class _MyProductState extends State<MyProduct> {
                 SizedBox(width: 5),
                 Text(
                   'Rẻ Vô Địch',
-                  style:
-                      TextStyle(fontSize: 13, color: Colors.deepOrange),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.deepOrange,
+                  ),
                 ),
               ],
             ),

@@ -17,10 +17,10 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(color: Colors.purple, fontSize: 40)),
         ),
 
-        Icon(Icons.emoji_food_beverage_outlined, size: 100, color: Colors.red),
-        Text("Tôi là đương kim Trương Đình Quốc Trung \nMr.Beer Kim Longggg", 
+        Icon(Icons.school, size: 100, color: Colors.red),
+        Text("Tôi là Nguyễn Diệu Hằng \nsinh viên trường Đại Học Khoa Học", 
         textAlign: TextAlign.center, // căn giữa chữ
-        style: TextStyle(fontSize: 30, color: Colors.blue)),
+        style: TextStyle(fontSize: 31, color: Colors.blue)),
       ],
     );
   }
