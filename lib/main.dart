@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nhom3/model/article.dart';
+import 'package:flutter_nhom3/model/source.dart';
+import 'package:flutter_nhom3/myappnews.dart';
 
 import 'tonghopgiuaky.dart';
 import 'myhomepage.dart';
@@ -14,19 +17,21 @@ import 'myregister.dart';
 import 'myweight.dart';
 import 'myfeedback.dart';
 import 'my_product.dart';
+import 'news.dart';
 
 void main() {
-  runApp(const MyApp());
+
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       // 👇 ROUTER NẰM Ở ĐÂY
       initialRoute: '/',
       routes: {
@@ -36,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/bt3': (context) => const MyHomeWork(),
         '/bt4': (context) => const MyName(),
         '/bt5': (context) => const MyMe(),
+        '/bt6': (context) => const MyAppNews01(),
         '/bt7': (context) => const DemGio(),
         '/bt8': (context) => const DemMau(),
         '/bt9': (context) => const UngDung(),

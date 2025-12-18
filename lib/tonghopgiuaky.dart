@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nhom3/myappnews.dart';
 import 'myhomepage.dart';
 import 'myplace.dart';
 import 'myhomework.dart';
@@ -29,6 +30,7 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
     MyHomeWork(),
     MyName(),
     MyMe(),
+    MyAppNews01(),
     DemGio(),
     DemMau(),
     UngDung(),
@@ -42,10 +44,7 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TỔNG HỢP GIỮA KỲ'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('TỔNG HỢP GIỮA KỲ'), centerTitle: true),
 
       drawer: Drawer(
         child: ListView(
@@ -59,8 +58,7 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
                 children: const [
                   Row(
                     children: [
-                      Icon(Icons.menu_book,
-                          color: Colors.white, size: 36),
+                      Icon(Icons.menu_book, color: Colors.white, size: 36),
                       SizedBox(width: 10),
                       Text(
                         'MENU BÀI TẬP',
@@ -90,21 +88,20 @@ class _TongHopGiuaKyState extends State<TongHopGiuaKy> {
             drawerItem(2, Icons.book, 'Bài 3: MyHomeWork'),
             drawerItem(3, Icons.person, 'Bài 4: MyName'),
             drawerItem(4, Icons.face, 'Bài 5: MyMe'),
-            drawerItem(5, Icons.timer, 'Bài 7: DemGio'),
-            drawerItem(6, Icons.color_lens, 'Bài 8: DemMau'),
-            drawerItem(7, Icons.apps, 'Bài 9: UngDung'),
-            drawerItem(8, Icons.account_circle, 'Bài 10: MyAccount'),
-            drawerItem(9, Icons.app_registration, 'Bài 11: MyRegister'),
-            drawerItem(10, Icons.monitor_weight, 'Bài 12: MyWeight'),
-            drawerItem(11, Icons.feedback, 'Bài 13: MyFeedback'),
-            drawerItem(12, Icons.shopping_cart, 'Bài 14: MyProduct'),
+            drawerItem(5, Icons.face, 'Bài 6: News'),
+            drawerItem(6, Icons.timer, 'Bài 7: DemGio'),
+            drawerItem(7, Icons.color_lens, 'Bài 8: DemMau'),
+            drawerItem(8, Icons.apps, 'Bài 9: UngDung'),
+            drawerItem(9, Icons.account_circle, 'Bài 10: MyAccount'),
+            drawerItem(10, Icons.app_registration, 'Bài 11: MyRegister'),
+            drawerItem(11, Icons.monitor_weight, 'Bài 12: MyWeight'),
+            drawerItem(12, Icons.feedback, 'Bài 13: MyFeedback'),
+            drawerItem(13, Icons.shopping_cart, 'Bài 14: MyProduct'),
           ],
         ),
       ),
 
-      body: selectedIndex == -1
-          ? const TrangChu()
-          : pages[selectedIndex],
+      body: selectedIndex == -1 ? const TrangChu() : pages[selectedIndex],
     );
   }
 
@@ -178,11 +175,7 @@ class TrangChu extends StatelessWidget {
                       value: '22T1020599',
                     ),
                     SizedBox(height: 10),
-                    InfoRow(
-                      icon: Icons.group,
-                      label: 'Nhóm',
-                      value: 'Nhóm 3',
-                    ),
+                    InfoRow(icon: Icons.group, label: 'Nhóm', value: 'Nhóm 3'),
                   ],
                 ),
               ),
@@ -214,14 +207,9 @@ class InfoRow extends StatelessWidget {
       children: [
         Icon(icon, color: Colors.blue),
         const SizedBox(width: 10),
-        Text(
-          '$label:',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        Text('$label:', style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(width: 6),
-        Expanded(
-          child: Text(value, style: const TextStyle(fontSize: 16)),
-        ),
+        Expanded(child: Text(value, style: const TextStyle(fontSize: 16))),
       ],
     );
   }

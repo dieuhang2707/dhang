@@ -10,11 +10,12 @@ class MyProduct extends StatefulWidget {
 }
 
 class _MyProductState extends State<MyProduct> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  // ====== THÊM MỚI ======
+  List<Product> _list = [];
+  List<Product> _listSearch = [];
+  List<Product> cart = [];
+  TextEditingController _searchController = TextEditingController();
+  // =====================
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,13 @@ class _MyProductState extends State<MyProduct> {
         future: Test_api.getAllProducts(),
         builder: (context, red) {
           if (red.connectionState == ConnectionState.done) {
-            return myListProduct(red.data!);
+            if (_list.isEmpty) {
+              _list = red.data!;
+              _listSearch = _list;
+            }
+            return myListProduct(_listSearch);
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
@@ -42,22 +47,22 @@ class _MyProductState extends State<MyProduct> {
   Widget myListProduct(List<Product> ls) {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.62,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
       itemCount: ls.length,
-      itemBuilder: (context, red) {
-        return myProduct(ls[red]);
+      itemBuilder: (context, index) {
+        return myProduct(ls[index]);
       },
     );
   }
 
   Widget myProduct(Product p) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -77,31 +82,38 @@ class _MyProductState extends State<MyProduct> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             p.title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            maxLines: 2, // Giới hạn 2 dòng
-            overflow: TextOverflow.ellipsis, //dai qua thi ...
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           danhGia(p),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "${p.price ?? 0}\$",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.deepOrange,
                 ),
               ),
-              SizedBox(width: 20),
-              Text(
-                "Đã bán ${p.rating.count ?? 0}k+",
-style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+              IconButton(
+                icon: const Icon(Icons.add_shopping_cart,
+                    color: Colors.deepOrange),
+                onPressed: () {
+                  setState(() {
+                    cart.add(p);
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Đã thêm vào giỏ hàng")),
+                  );
+                },
               ),
             ],
           ),
@@ -111,43 +123,71 @@ style: TextStyle(fontSize: 11, color: Colors.grey[600]),
   }
 
   Widget tabBar() {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              height: 40,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: Colors.grey, size: 20),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Tìm kiếm...',
-                      style: TextStyle(color: Colors.deepOrange, fontSize: 14),
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.search, color: Colors.grey, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        _listSearch = _list
+                            .where((p) => p.title
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Tìm kiếm...',
+                      border: InputBorder.none,
                     ),
                   ),
-                  Icon(Icons.camera_alt, color: Colors.grey, size: 20),
-                ],
-              ),
+                ),
+                const Icon(Icons.camera_alt,
+                    color: Colors.grey, size: 20),
+              ],
             ),
           ),
-
-          const SizedBox(width: 15),
-          const Icon(
-            Icons.shopping_cart_outlined,
-            color: Colors.white,
-            size: 26,
-          ),
-          const SizedBox(width: 15),
-          const Icon(Icons.chat_outlined, color: Colors.white, size: 26),
-        ],
-      ),
+        ),
+        const SizedBox(width: 15),
+        Stack(
+          children: [
+            const Icon(Icons.shopping_cart_outlined,
+                color: Colors.white, size: 26),
+            if (cart.isNotEmpty)
+              Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    cart.length.toString(),
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 10),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(width: 15),
+        const Icon(Icons.chat_outlined, color: Colors.white, size: 26),
+      ],
     );
   }
 
@@ -156,27 +196,29 @@ style: TextStyle(fontSize: 11, color: Colors.grey[600]),
       children: [
         if (p.price <= 50.0) ...[
           Container(
-            margin: EdgeInsets.only(right: 10),
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            margin: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.deepOrange),
               borderRadius: BorderRadius.circular(5),
               color: Colors.deepOrange.withOpacity(0.2),
             ),
             child: Row(
-              children: [
-                Icon((Icons.thumb_up), color: Colors.deepOrange, size: 16),
+              children: const [
+                Icon(Icons.thumb_up,
+                    color: Colors.deepOrange, size: 16),
                 SizedBox(width: 5),
                 Text(
                   'Rẻ Vô Địch',
-                  style: TextStyle(fontSize: 13, color: Colors.deepOrange),
+                  style:
+                      TextStyle(fontSize: 13, color: Colors.deepOrange),
                 ),
               ],
             ),
           ),
         ],
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.amberAccent),
             borderRadius: BorderRadius.circular(5),
@@ -185,11 +227,11 @@ style: TextStyle(fontSize: 11, color: Colors.grey[600]),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.star, color: Colors.amber, size: 16),
-              SizedBox(width: 5),
+              const Icon(Icons.star, color: Colors.amber, size: 16),
+              const SizedBox(width: 5),
               Text(
                 (p.rating.rate ?? 0.0).toString(),
-                style: TextStyle(fontSize: 13),
+                style: const TextStyle(fontSize: 13),
               ),
             ],
           ),
